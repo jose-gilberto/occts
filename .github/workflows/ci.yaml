@@ -1,0 +1,32 @@
+name: Continuous Integration Pipeline
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    type: [ opened, synchronize ]
+
+jobs:
+  ci-pipeline:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+          architecture: x64
+          cache: 'pip'
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pylint
+          pip install pytest
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+      - name: Lint with Pylint
+        run: |
+          pylint ./occts/
+      - name: Run Pytest
+        run: |
+          pytest ./occts/tests/
+
