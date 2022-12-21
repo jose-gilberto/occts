@@ -116,6 +116,10 @@ def create_datasets(
         )
         return train_dataset, val_dataset, test_dataset
 
+    train_dataset = UcrDataset(
+        X=X_train_, y=y_train_
+    )
+
     return train_dataset, None, test_dataset
 
 

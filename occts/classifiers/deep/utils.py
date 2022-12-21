@@ -17,7 +17,7 @@ def _conv1d_same_padding(
     bias: Optional[torch.Tensor] = None
 ) -> torch.Tensor:
     kernel, dilation, stride = weight.size(2), dilation[0], stride[0]
-    l_out = l_in = input.size(2)
+    l_out = l_in = x.size(2)
     padding = (((l_out - 1) * stride) - l_in + (dilation * (kernel - 1)) + 1)
 
     if padding % 2 != 0:
@@ -47,3 +47,38 @@ class Conv1dSamePadding(nn.Conv1d):
             dilation=self.dilation,
             groups=self.groups
         )
+
+
+class ConvBlock(nn.Module):
+    """ Implement a conv block that will operate over the time series
+    data. The block consist in a Conv1d layer, a batch norm layer and
+    a ReLu activation function.
+
+    The data flow implemented is the following one:
+        Conv1d(padding=`same`) -> BatchNorm -> ReLU
+    """
+
+    def __init__(
+        self,
+        in_channels: int,
+        out_channels: int,
+        kernel_size: int,
+        stride: int,
+        bias: Optional[bool] = True
+    ) -> None:
+        super().__init__()
+
+        self.layers = nn.Sequential(
+            Conv1dSamePadding(
+                in_channels=in_channels,
+                out_channels=out_channels,
+                bias=bias,
+                kernel_size=kernel_size,
+                stride=stride
+            ),
+            nn.BatchNorm1d(num_features=out_channels),
+            nn.ReLU(),
+        )
+
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        return self.layers(x)

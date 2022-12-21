@@ -8,8 +8,10 @@ from typing import Literal, Tuple, Union
 
 from .fcn import FCNClassifier
 from .linear import LinearClassifier
+from .resnet import ResnetClassifier
+from .inception import InceptionModel
 
-__all__ = ['LinearClassifier', 'FCNClassifier']
+__all__ = ['LinearClassifier', 'FCNClassifier', 'ResnetClassifier', 'InceptionModel']
 
 
 def get_radius(distance: torch.Tensor, nu: float):
@@ -168,7 +170,8 @@ class OneClassTrainer:
         preds[preds > 0] = 1
 
         self.test_auc = roc_auc_score(labels, scores)
+        self.test_acc = accuracy_score(labels, preds)
 
         print(f'\t\t\tTest set AUC {self.test_auc}', )
-        print(f'\t\t\tTest set Accuracy {accuracy_score(labels, preds)}')
+        print(f'\t\t\tTest set Accuracy {self.test_acc}')
 
