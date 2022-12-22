@@ -1,0 +1,28 @@
+experiments:
+  
+  linear:
+    epochs: 5000            # Number of epochs
+    optimizer: adadelta     # Optimizer
+    learning_rate: 0.001    # Learning rate used in optimizer
+    callback:               # Callback parameters
+      factor: 0.5           # Factor used in callback
+      patience: 200         # Number of epochs with no improvement after wich lr will be reduced.
+      min_lr: 0.1           # A lower bound on the learning rate of all param groups or each group respectively
+
+  fcn:
+    epochs: 2000
+    optimizer: adam
+    learning_rate: 0.001
+    callback:
+      factor: 0.5
+      patience: 50
+      min_lr: 0.0001
+
+  resnet:
+    epochs: 1500
+    optimizer: adam
+    learning_rate: 0.001
+    callback:
+      factor: 0.5
+      patience: 50
+      min_lr: 0.0001
