@@ -333,19 +333,6 @@ class Spawner(Transform):
                     axis=1
                 )
 
-                # if self._verbose = 1:
-                #     print(random_points[i])
-                #     # FIX: remove slope_constraint
-                #     dtw_value, cost, DTW_map, path = dtw.dtw(
-                #         pat,
-                #         random_sample,
-                #         return_flag = dtw.RETURN_ALL,
-                #         slope_constraint=slope_constraint,
-                #         window=window
-                #     )
-                #     dtw.draw_graph1d(cost, DTW_map, path, pat, random_sample)
-                #     dtw.draw_graph1d(cost, DTW_map, combined, pat, random_sample)
-
                 mean = np.mean(
                     [pat[combined[0]], random_sample[combined[1]]],
                     axis=0
